@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Painel{% endblock %}
+{% block content %}
+<h1>Painel</h1>
+<section class="mt-4">
+  <h2>Criar Cupom</h2>
+  <form id="formCupom" class="row g-3">
+    <div class="col-md-3">
+      <label for="codigo" class="form-label">Código</label>
+      <input type="text" class="form-control" id="codigo" required>
+    </div>
+    <div class="col-md-3">
+      <label for="tipo" class="form-label">Tipo</label>
+      <select class="form-select" id="tipo">
+        <option value="valor">Valor (R$)</option>
+        <option value="percentual">Percentual (%)</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="valor" class="form-label">Valor</label>
+      <input type="number" step="0.01" class="form-control" id="valor" required>
+    </div>
+    <div class="col-md-3">
+      <label for="limite" class="form-label">Quantidade de usos</label>
+      <input type="number" class="form-control" id="limite" required>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Criar</button>
+    </div>
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+$(function(){
+  $('#formCupom').on('submit', function(e){
+    e.preventDefault();
+    $.ajax({
+      url: '/api/cupom/criar',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        codigo: $('#codigo').val(),
+        tipo: $('#tipo').val(),
+        valor: $('#valor').val(),
+        limite: $('#limite').val()
+      }),
+      success: function(){
+        alert('Cupom criado!');
+        $('#formCupom')[0].reset();
+      },
+      error: function(xhr){
+        alert(xhr.responseJSON && xhr.responseJSON.msg ? xhr.responseJSON.msg : 'Erro ao criar cupom');
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

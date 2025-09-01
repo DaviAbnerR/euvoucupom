@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 
-db = SQLAlchemy()
+db = SQLAlchemy(session_options={"expire_on_commit": False})
 
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -93,6 +93,16 @@ class Produto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
     preco = db.Column(db.Float, nullable=False)
+
+
+class Cupom(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    codigo = db.Column(db.String(50), unique=True, nullable=False)
+    tipo = db.Column(db.String(20), default='valor')  # 'valor' ou 'percentual'
+    valor = db.Column(db.Float, nullable=False)
+    limite_uso = db.Column(db.Integer, nullable=False)
+    usos = db.Column(db.Integer, default=0)
+    criador_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
 
 class AnalyticsEvent(db.Model):
