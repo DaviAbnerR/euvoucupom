@@ -46,9 +46,25 @@
     <tfoot>
         <tr>
             <th colspan="2" class="text-end">Subtotal</th>
-            <th class="text-end">R$ {{ '%.2f'|format(total) }}</th>
+            <th class="text-end">R$ {{ '%.2f'|format(subtotal) }}</th>
             <th></th>
         </tr>
+        {% if desconto > 0 %}
+        <tr>
+            <th colspan="2" class="text-end">Desconto ({{ cupom.codigo }})</th>
+            <th class="text-end text-success">- R$ {{ '%.2f'|format(desconto) }}</th>
+            <th><button class="btn btn-sm btn-outline-danger" id="removerCupom">Remover</button></th>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">
+                <form id="formCupom" class="d-flex justify-content-end">
+                    <input type="text" id="codigoCupom" class="form-control form-control-sm me-2" placeholder="Código do cupom">
+                    <button type="submit" class="btn btn-sm btn-primary">Aplicar</button>
+                </form>
+            </td>
+        </tr>
+        {% endif %}
         <tr>
             <th colspan="2" class="text-end">Taxa de Serviço</th>
             <th class="text-end">R$ {{ '%.2f'|format(taxa_servico) }}</th>
@@ -110,6 +126,20 @@ $(function(){
                 location.reload();
             }
         });
+    });
+    $('#formCupom').on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            url: '/api/carrinho/aplicar_cupom',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({codigo: $('#codigoCupom').val()}),
+            success: function(){ location.reload(); },
+            error: function(xhr){ alert(xhr.responseJSON && xhr.responseJSON.msg ? xhr.responseJSON.msg : 'Cupom inválido'); }
+        });
+    });
+    $('#removerCupom').on('click', function(){
+        $.post('/api/carrinho/remover_cupom', function(){ location.reload(); });
     });
 });
 </script>
