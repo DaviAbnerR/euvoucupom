@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Redefinir Senha{% endblock %}
+
+{% block content %}
+<div class="card-central">
+    <h1>🔑 Redefinir Senha</h1>
+    <form method="post">
+        <label>Nova senha:</label>
+        <input type="password" name="senha" required
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            title="A senha deve conter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula e um número.">
+        <button type="submit">Redefinir senha</button>
+    </form>
+</div>
+{% endblock %}

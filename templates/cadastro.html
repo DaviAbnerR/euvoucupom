@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+<div class="card-central">
+    <h1>📋 Cadastro</h1>
+    <form method="post">
+        <label>Nome:</label>
+        <input type="text" name="nome" required>
+
+        <label>Email:</label>
+        <input type="email" name="email" required>
+
+        <label>Senha:</label>
+        <input type="password" name="senha" required 
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            title="A senha deve conter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula e um número.">
+
+        <label>Telefone:</label>
+        <input type="tel" name="telefone" required>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <p>Já tem conta? <a href="/login">Faça login</a></p>
+</div>
+{% endblock %}
+

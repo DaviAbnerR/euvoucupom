@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="card-central">
+    <h1>🔐 Login</h1>
+    <form method="post">
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Senha:</label><br>
+        <input type="password" name="senha" required><br><br>
+
+        <button type="submit">Entrar</button>
+        <p><a href="{{ url_for('esqueci_senha') }}">Esqueci minha senha</a></p>
+
+    </form>
+    <p>Não tem conta? <a href="/cadastro">Cadastre-se</a></p>
+</div>
+{% endblock %}
